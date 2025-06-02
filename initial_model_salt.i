@@ -294,12 +294,27 @@ start_production = 3600
     petsc_options_iname = '-pc_type -sub_pc_type -sub_pc_factor_shift_type -pc_asm_overlap'
     petsc_options_value = ' asm      lu           NONZERO                   2'
   []
+  [smp]
+    type = SMP
+    full = true
+    petsc_options_iname = '-ksp_type -pc_type -sub_pc_type -sub_pc_factor_shift_type'
+    petsc_options_value = 'gmres bjacobi lu NONZERO'
+  []
+  [mumps]
+    type = SMP
+    full = true
+    petsc_options_iname = '-pc_type -pc_factor_mat_solver_package'
+    petsc_options_value = ' lu       mumps'
+  []
 []
 
 [Executioner]
   type = Transient
   end_time = 8640000
   dtmax = 43200
+  automatic_scaling = true
+  nl_abs_tol = 2e-8
+  nl_rel_tol = 1e-5
   [TimeStepper]
     type = IterationAdaptiveDT
     dt = 10
@@ -311,3 +326,16 @@ start_production = 3600
     type = Exodus
   []
 []
+
+# [Postprocessors]
+#   [Li_prod]
+#     type = PointValue
+#     point = '0 0 -11'
+#     variable = C
+#   []
+#   [pp_prod]
+#     type = PointValue
+#     point = '0 0 -11'
+#     variable = pp
+#   []
+# []
